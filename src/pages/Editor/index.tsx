@@ -26,9 +26,12 @@ export default function IndexPage() {
   };
   useEffect(() => {
     let el = components.find((component) => component.id === currentElement);
-
     setElement(el);
-  }, [currentElement]);
+  }, [currentElement, components]);
+
+  const handleChange = (key: string, event: string | number) => {
+    dispatch(actionObject.setItem({ key, value: event }));
+  };
   return (
     <div className="editor-container">
       <div className="container-left">
@@ -54,7 +57,7 @@ export default function IndexPage() {
       </div>
       <div className="container-right">
         <div>组件属性</div>
-        {element && <PropsTable attrs={element.props} />}
+        {element && <PropsTable attrs={element.props} change={handleChange} />}
         <pre>
           {element &&
             map(element.props, (val, key) => (

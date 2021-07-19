@@ -73,6 +73,7 @@ const initialState = {
 const ADD_ITEM = 'ADD_ITEM';
 const MINUS_ITEM = 'MINUS_ITEM';
 const SET_ACTIVE = 'SET_ACTIVE';
+const SET_ITEM = 'SET_ITEM';
 // const GET_CURRENT_ELEMENT = 'GET_CURRENT_ELEMENT';
 type AddItem = {
   type: typeof ADD_ITEM;
@@ -83,7 +84,10 @@ type MinusItem = {
   type: typeof MINUS_ITEM;
   payload: string;
 };
-
+type SetItem = {
+  type: typeof SET_ITEM;
+  payload: { key: string; value: number | string };
+};
 type SetActive = {
   type: typeof SET_ACTIVE;
   payload: string;
@@ -99,6 +103,13 @@ export function minusItem(param: string): MinusItem {
   return { type: MINUS_ITEM, payload: param };
 }
 
+export function setItem(param: {
+  key: string;
+  value: number | string;
+}): SetItem {
+  return { type: SET_ITEM, payload: param };
+}
+
 export function setActive(param: string): SetActive {
   return { type: SET_ACTIVE, payload: param };
 }
@@ -107,8 +118,9 @@ export const actionObject = {
   addItem,
   minusItem,
   setActive,
+  setItem,
 };
-type Action = AddItem | MinusItem | SetActive;
+type Action = AddItem | MinusItem | SetActive | SetItem;
 
 // reducer
 export default function (
@@ -122,6 +134,18 @@ export default function (
       let components = state.components.filter(
         (item) => item.id !== action.payload,
       );
+      return { ...state, components };
+    }
+    case SET_ITEM: {
+      const { key, value } = action.payload;
+      // 先找到
+      let components = state.components.map((item) => {
+        if (item.id === state.currentElement) {
+          let newKey = key as keyof Partial<TextComponentProps>;
+          item.props[newKey] = String(value);
+        }
+        return item;
+      });
       return { ...state, components };
     }
     case SET_ACTIVE: {

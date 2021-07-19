@@ -8,8 +8,6 @@ interface Params {
 
 const EditWrapper: FC<Params> = (props) => {
   const { children, id, active, setActive } = props;
-  console.log(active);
-
   return (
     <div
       className={active ? 'edit-wrapper active' : 'edit-wrapper'}

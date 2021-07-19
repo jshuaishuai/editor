@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Text from '../Text';
 import { v4 as uuidv4 } from 'uuid';
-import { TextComponentProps } from '@/components/defaultProps';
+import { TextComponentProps } from '@/defaultProps';
 import { ComponentData } from '@/store/reducers/editor';
 interface Params {
   list: Array<any>;
